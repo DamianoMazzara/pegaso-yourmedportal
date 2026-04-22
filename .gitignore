@@ -1,0 +1,13 @@
+node_modules
+.DS_Store
+dist
+apps/api/dist
+build
+.svelte-kit
+.turbo
+.env
+.env.local
+apps/api/.env
+apps/web/.env
+apps/api/uploads
+*.log

@@ -1,0 +1,164 @@
+classDiagram
+  class Error
+  class HttpError {
+    +number status
+    +HttpError(status, message)
+  }
+
+  class AppContainer {
+    +AuthService auth
+    +PublicCatalogService publicCatalog
+    +PublicSchedulingService publicScheduling
+    +PublicBookingService publicBooking
+    +PublicReportService publicReport
+    +AdminAuthService adminAuth
+    +AdminMacroAreaService adminMacroArea
+    +AdminVisitTypeService adminVisitType
+    +AdminBookingService adminBooking
+    +AdminReportService adminReport
+    +AdminActivityService adminActivity
+    +AdminUserService adminUser
+    +AdminReportUploadService adminReportUpload
+    +AppContainer(uploadDir)
+  }
+
+  class AuthService {
+    +signAdminToken(user) Promise~string~
+    +verifyAdminToken(token) Promise~AdminPayload?~
+  }
+
+  class ActivityLogger {
+    +log(input) Promise~void~
+  }
+
+  class PublicCatalogService {
+    +macroAreasList()
+    +visitTypesList()
+  }
+
+  class PublicSchedulingService {
+    +availableSlots(input) Promise
+  }
+
+  class PublicBookingService {
+    +createBooking(input) Promise
+  }
+
+  class PublicReportService {
+    +getReport(input) Promise
+  }
+
+  class AdminAuthService {
+    +login(input, req) Promise
+    +me(admin) Promise
+    +stats() Promise
+  }
+
+  class AdminMacroAreaService {
+    +list()
+    +create(input, admin) Promise
+    +update(input, admin) Promise
+    +delete_(input, admin) Promise
+  }
+
+  class AdminVisitTypeService {
+    +list()
+    +create(input, admin) Promise
+    +update(input, admin) Promise
+    +delete_(input, admin) Promise
+  }
+
+  class AdminBookingService {
+    +list(input)
+    +create(input, admin) Promise
+    +cancel(input, admin) Promise
+    +updatePatient(input, admin) Promise
+  }
+
+  class AdminReportService {
+    +list() Promise
+    +create(input, admin) Promise
+    +setNotes(input, admin) Promise
+  }
+
+  class AdminReportUploadService {
+    +getPublicAttachment(attachmentId, fiscalCode, reportCode) Promise
+    +uploadReportAttachment(reportId, file, admin) Promise
+  }
+
+  class AdminActivityService {
+    +list(input) Promise
+  }
+
+  class AdminUserService {
+    +list()
+    +create(input, admin) Promise
+  }
+
+  class AppDb
+  class MacroAreaRepository
+  class VisitTypeRepository
+  class BookingRepository
+  class ReportRepository
+  class ReportAttachmentRepository
+  class AdminUserRepository
+  class ActivityLogRepository
+
+  HttpError --|> Error : extends
+
+  AppContainer *-- AuthService
+  AppContainer *-- PublicCatalogService
+  AppContainer *-- PublicSchedulingService
+  AppContainer *-- PublicBookingService
+  AppContainer *-- PublicReportService
+  AppContainer *-- AdminAuthService
+  AppContainer *-- AdminMacroAreaService
+  AppContainer *-- AdminVisitTypeService
+  AppContainer *-- AdminBookingService
+  AppContainer *-- AdminReportService
+  AppContainer *-- AdminActivityService
+  AppContainer *-- AdminUserService
+  AppContainer *-- AdminReportUploadService
+
+  PublicCatalogService ..> MacroAreaRepository : uses
+  PublicCatalogService ..> VisitTypeRepository : uses
+  PublicSchedulingService ..> VisitTypeRepository
+  PublicSchedulingService ..> MacroAreaRepository
+  PublicSchedulingService ..> BookingRepository
+  PublicBookingService ..> VisitTypeRepository
+  PublicBookingService ..> MacroAreaRepository
+  PublicBookingService ..> BookingRepository
+  PublicReportService ..> ReportRepository
+  PublicReportService ..> VisitTypeRepository
+  PublicReportService ..> ReportAttachmentRepository
+
+  AdminAuthService ..> AdminUserRepository
+  AdminAuthService ..> AuthService
+  AdminAuthService ..> ActivityLogger
+  AdminAuthService ..> BookingRepository
+  AdminAuthService ..> ReportRepository
+  AdminMacroAreaService ..> MacroAreaRepository
+  AdminMacroAreaService ..> ActivityLogger
+  AdminVisitTypeService ..> VisitTypeRepository
+  AdminVisitTypeService ..> ActivityLogger
+  AdminBookingService ..> BookingRepository
+  AdminBookingService ..> VisitTypeRepository
+  AdminBookingService ..> MacroAreaRepository
+  AdminBookingService ..> ActivityLogger
+  AdminReportService ..> ReportRepository
+  AdminReportService ..> ActivityLogger
+  AdminReportUploadService ..> ReportRepository
+  AdminReportUploadService ..> ReportAttachmentRepository
+  AdminReportUploadService ..> ActivityLogger
+  AdminActivityService ..> ActivityLogRepository
+  AdminUserService ..> AdminUserRepository
+  AdminUserService ..> ActivityLogger
+  ActivityLogger ..> ActivityLogRepository
+
+  MacroAreaRepository ..> AppDb
+  VisitTypeRepository ..> AppDb
+  BookingRepository ..> AppDb
+  ReportRepository ..> AppDb
+  ReportAttachmentRepository ..> AppDb
+  AdminUserRepository ..> AppDb
+  ActivityLogRepository ..> AppDb

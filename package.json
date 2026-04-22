@@ -1,0 +1,20 @@
+{
+	"name": "yourmedportal",
+	"private": true,
+	"packageManager": "npm@10.9.4",
+	"workspaces": ["apps/*"],
+	"scripts": {
+		"dev": "turbo dev",
+		"build": "turbo build",
+		"db:reset": "npm run db:reset -w api",
+		"lint": "turbo lint",
+		"api:test": "npm run test -w api",
+		"web:e2e": "npm run test:e2e -w web",
+		"docs:uml": "npx -y @mermaid-js/mermaid-cli@11 -i docs/diagrams/uml-api-packages.mmd -o docs/artifacts/uml-api-packages.png -b transparent && npx -y @mermaid-js/mermaid-cli@11 -i docs/diagrams/uml-api-packages.mmd -o docs/artifacts/uml-api-packages.svg && npx -y @mermaid-js/mermaid-cli@11 -i docs/diagrams/uml-api-classes.mmd -o docs/artifacts/uml-api-classes.png -b white -w 4000 -H 3200 -s 1.2 && npx -y @mermaid-js/mermaid-cli@11 -i docs/diagrams/uml-api-classes.mmd -o docs/artifacts/uml-api-classes.svg -b white -w 4000 -H 3200",
+		"docs:er": "npx -y @mermaid-js/mermaid-cli@11 -i docs/diagrams/er-db.mmd -o docs/artifacts/er-database.png -b white -w 1400 -H 1000 -s 1.2 && npx -y @mermaid-js/mermaid-cli@11 -i docs/diagrams/er-db.mmd -o docs/artifacts/er-database.svg -b white",
+		"docs:diagrams": "npm run docs:uml && npm run docs:er"
+	},
+	"devDependencies": {
+		"turbo": "^2.4.4"
+	}
+}

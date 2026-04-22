@@ -1,0 +1,79 @@
+erDiagram
+  macro_areas {
+    int id PK
+    varchar name
+    int slot_duration_minutes
+    int parallel_slots
+    datetime created_at
+  }
+
+  visit_types {
+    int id PK
+    varchar name
+    text description
+    int macro_area_id FK
+    datetime created_at
+  }
+
+  bookings {
+    int id PK
+    varchar code UK
+    varchar fiscal_code
+    varchar first_name
+    varchar last_name
+    int age
+    varchar address
+    varchar phone
+    varchar email
+    int visit_type_id FK
+    datetime slot_start
+    enum status
+    datetime created_at
+  }
+
+  reports {
+    int id PK
+    varchar code UK
+    varchar fiscal_code
+    varchar first_name
+    varchar last_name
+    int visit_type_id FK
+    datetime exam_date
+    text notes
+    enum status
+    datetime created_at
+  }
+
+  report_attachments {
+    int id PK
+    int report_id FK
+    varchar original_name
+    varchar stored_path
+    varchar mime_type
+    int size_bytes
+    datetime created_at
+  }
+
+  admin_users {
+    int id PK
+    varchar email UK
+    varchar password_hash
+    varchar name
+    datetime created_at
+  }
+
+  activity_logs {
+    int id PK
+    int admin_user_id FK
+    varchar action
+    varchar entity_type
+    varchar entity_id
+    json details
+    datetime created_at
+  }
+
+  macro_areas ||--o{ visit_types : ""
+  visit_types ||--o{ bookings : ""
+  visit_types ||--o{ reports : ""
+  reports ||--o{ report_attachments : ""
+  admin_users |o--o{ activity_logs : ""

@@ -1,0 +1,87 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Palette ancorata a #CCECEE (ciano/menta chiarissimo).
+ * Sfondi e blocchi neutri = mix con bianco; primary = teal più saturo sulla stessa famiglia.
+ */
+:root {
+	--radius: 0.625rem;
+	--mint: #ccecee;
+	/* ~14% mint: pagina leggermente “fresca” senza stancare */
+	--background: color-mix(in srgb, var(--mint) 14%, white);
+	--foreground: oklch(0.28 0.045 210);
+	--card: color-mix(in srgb, var(--mint) 6%, white);
+	--card-foreground: oklch(0.28 0.045 210);
+	--popover: color-mix(in srgb, var(--mint) 6%, white);
+	--popover-foreground: oklch(0.28 0.045 210);
+	--primary: oklch(0.46 0.095 196);
+	--primary-foreground: oklch(0.99 0.008 196);
+	--secondary: color-mix(in srgb, var(--mint) 52%, white);
+	--secondary-foreground: oklch(0.32 0.06 200);
+	--muted: color-mix(in srgb, var(--mint) 38%, white);
+	--muted-foreground: oklch(0.48 0.04 205);
+	--accent: color-mix(in srgb, var(--mint) 62%, white);
+	--accent-foreground: oklch(0.3 0.065 200);
+	--destructive: oklch(0.55 0.22 25);
+	--border: oklch(0.88 0.045 196);
+	--input: oklch(0.88 0.045 196);
+	--ring: oklch(0.58 0.09 196);
+}
+
+.dark {
+	--background: oklch(0.19 0.035 205);
+	--foreground: oklch(0.96 0.02 196);
+	--card: color-mix(in srgb, var(--mint) 8%, oklch(0.22 0.038 202));
+	--card-foreground: oklch(0.96 0.02 196);
+	--popover: color-mix(in srgb, var(--mint) 8%, oklch(0.22 0.038 202));
+	--popover-foreground: oklch(0.96 0.02 196);
+	--primary: oklch(0.72 0.1 196);
+	--primary-foreground: oklch(0.18 0.04 210);
+	--secondary: oklch(0.3 0.045 200);
+	--secondary-foreground: oklch(0.95 0.02 196);
+	--muted: oklch(0.3 0.045 200);
+	--muted-foreground: oklch(0.72 0.04 200);
+	--accent: oklch(0.32 0.05 198);
+	--accent-foreground: oklch(0.96 0.02 196);
+	--destructive: oklch(0.65 0.2 22);
+	--border: oklch(0.96 0.02 196 / 12%);
+	--input: oklch(0.96 0.02 196 / 16%);
+	--ring: oklch(0.62 0.1 196);
+}
+
+@theme inline {
+	--radius-sm: calc(var(--radius) - 4px);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) + 4px);
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-destructive: var(--destructive);
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
+}
+
+@layer base {
+	* {
+		@apply border-border outline-ring/50;
+	}
+	body {
+		@apply min-h-screen bg-background font-sans text-foreground antialiased;
+	}
+}

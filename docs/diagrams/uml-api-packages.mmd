@@ -1,0 +1,24 @@
+flowchart TB
+  subgraph rest["rest — presentazione (OpenAPI / Hono)"]
+    R1[createOpenAPIApp]
+    R2[createApiApp in http/create-app]
+  end
+  subgraph comp[composition]
+    C1[AppContainer]
+  end
+  subgraph app[application — servizi OO]
+    direction TB
+    PUB[public: catalogo, slot, prenotazione, referti]
+    ADM[admin: CRUD, auth, attività]
+    SUP[support: AuthService, ActivityLogger]
+  end
+  subgraph infra[infrastructure — repository]
+    REPO[Repository, MySQL + Drizzle]
+  end
+  R1 --> C1
+  R2 --> C1
+  PUB --> REPO
+  ADM --> REPO
+  SUP --> REPO
+  C1 --> app
+  C1 --> REPO
