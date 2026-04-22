@@ -31,11 +31,31 @@ async function apiFetch(path: string, init?: RequestInit): Promise<Response> {
 	return fetch(`${baseUrl()}${path}`, { ...init, headers, credentials: 'include' });
 }
 
+/** Body JSON di errore API: stringa, Zod (issues) o simili. */
+function messageFromApiError(error: unknown): string {
+	if (error == null) return '';
+	if (typeof error === 'string') return error;
+	if (typeof error === 'object') {
+		const o = error as {
+			issues?: { message?: string }[];
+			message?: string;
+		};
+		if (Array.isArray(o.issues) && o.issues.length > 0) {
+			const parts = o.issues.map((i) => i.message).filter(Boolean) as string[];
+			if (parts.length > 0) return parts.join('. ');
+		}
+		if (typeof o.message === 'string' && o.message) return o.message;
+	}
+	return 'Errore richiesta';
+}
+
 async function parseJson<T>(resPromise: Promise<Response>): Promise<T> {
 	const res = await resPromise;
-	const data = (await res.json().catch(() => ({}))) as { error?: string };
+	const data = (await res.json().catch(() => ({}))) as { error?: unknown };
 	if (!res.ok) {
-		throw new Error((data.error ?? res.statusText) || 'Errore richiesta');
+		const msg =
+			data.error != null ? messageFromApiError(data.error) : res.statusText || 'Errore richiesta';
+		throw new Error(msg || 'Errore richiesta');
 	}
 	return data as T;
 }
@@ -359,7 +379,8 @@ export async function uploadReportFile(reportId: number, file: File) {
 		credentials: 'include'
 	});
 	if (!res.ok) {
-		const j = (await res.json().catch(() => ({}))) as { error?: string };
-		throw new Error(j.error ?? 'Caricamento fallito');
+		const j = (await res.json().catch(() => ({}))) as { error?: unknown };
+		const msg = j.error != null ? messageFromApiError(j.error) : 'Caricamento fallito';
+		throw new Error(msg);
 	}
 }
